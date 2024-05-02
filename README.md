@@ -16,7 +16,7 @@ Extracts colour palettes from photos using k-means clustering in LAB colour spac
 
 Is as simple as with any other Node.js module:
 
-    $ npm install @colour-extractor/colour-extractor-refactored
+    $ npm install colour-extractor-refactored
 
 Note: This module contains native Rust libraries. Please open an issue if your platform isn't supported.
 
@@ -25,7 +25,7 @@ Note: This module contains native Rust libraries. Please open an issue if your p
 `colour-extractor` exports four functions:
 
 ```js
-const { topColours, topColoursHex, topColoursBuffer, topColoursBuffer } = require('@colour-extractor/colour-extractor-refactored');
+const { topColours, topColoursHex, topColoursBuffer, topColoursBuffer } = require('colour-extractor-refactored');
 const colours = await topColours('./photos/cats/tigre.jpg');
 // const colours = await topColoursBuffer(/* an image buffer here */);
 console.log(colours);
