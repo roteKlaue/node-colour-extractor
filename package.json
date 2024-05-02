@@ -48,21 +48,5 @@
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version"
-  },
-  "optionalDependencies": {
-    "colour-extractor-refactored-win32-x64-msvc": "2.0.1",
-    "colour-extractor-refactored-darwin-x64": "2.0.1",
-    "colour-extractor-refactored-linux-x64-gnu": "2.0.1",
-    "colour-extractor-refactored-darwin-arm64": "2.0.1",
-    "colour-extractor-refactored-android-arm64": "2.0.1",
-    "colour-extractor-refactored-linux-arm64-gnu": "2.0.1",
-    "colour-extractor-refactored-linux-arm64-musl": "2.0.1",
-    "colour-extractor-refactored-win32-arm64-msvc": "2.0.1",
-    "colour-extractor-refactored-linux-arm-gnueabihf": "2.0.1",
-    "colour-extractor-refactored-linux-x64-musl": "2.0.1",
-    "colour-extractor-refactored-freebsd-x64": "2.0.1",
-    "colour-extractor-refactored-win32-ia32-msvc": "2.0.1",
-    "colour-extractor-refactored-android-arm-eabi": "2.0.1",
-    "colour-extractor-refactored-darwin-universal": "2.0.1"
   }
 }
