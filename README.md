@@ -2,7 +2,7 @@
 
 ---
 
-[![CI](https://github.com/josip/node-colour-extractor/actions/workflows/CI.yml/badge.svg)](https://github.com/josip/node-colour-extractor/actions/workflows/CI.yml)
+[![CI](https://github.com/roteklaue/node-colour-extractor/actions/workflows/CI.yml/badge.svg)](https://github.com/roteklaue/node-colour-extractor/actions/workflows/CI.yml)
 
 # colour-extractor
 
@@ -25,8 +25,9 @@ Note: This module contains native Rust libraries. Please open an issue if your p
 `colour-extractor` exports two functions:
 
 ```js
-const { topColours, topColoursHex } = require('@colour-extractor/colour-extractor');
+const { topColours, topColoursHex, topColoursBuffer, topColoursBuffer } = require('@colour-extractor/colour-extractor');
 const colours = await topColours('./photos/cats/tigre.jpg');
+// const colours = await topColoursBuffer(/* an image buffer here */);
 console.log(colours);
 // => [ [158, 64, 75], ... ]
 ```
@@ -45,6 +46,7 @@ console.log(colours);
 
 ```js
 const hexColours = await topColoursHex('./photos/cats/tigre.jpg');
+// const hexColours = await topColoursHexBuffer(/* an image buffer here */);
 console.log(hexColours);
 // => ["#2e4676", "#000002", "#0c2c0b"]
 ```
