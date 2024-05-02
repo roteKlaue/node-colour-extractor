@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/roteklaue/node-colour-extractor/actions/workflows/CI.yml/badge.svg)](https://github.com/roteklaue/node-colour-extractor/actions/workflows/CI.yml)
 
-# colour-extractor
+# colour-extractor-refactored
 
 Extracts colour palettes from photos using k-means clustering in LAB colour space.
 
@@ -22,7 +22,7 @@ Note: This module contains native Rust libraries. Please open an issue if your p
 
 ## Usage
 
-`colour-extractor` exports four functions:
+`colour-extractor-refactored` exports four functions:
 
 ```js
 const { topColours, topColoursHex, topColoursBuffer, topColoursBuffer } = require('colour-extractor-refactored');
@@ -65,7 +65,7 @@ Here's the simplified algorithm:
 
 ## Licence
 
-colour-extractor is published under MIT license.
+colour-extractor-refactored is published under MIT license.
 
 Photos used the examples above can be found on Unsplash:
 
