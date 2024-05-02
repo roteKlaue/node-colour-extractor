@@ -1,10 +1,10 @@
 {
-  "name": "@colour-extractor/colour-extractor",
+  "name": "@colour-extractor/colour-extractor-refactored",
   "description": "Extract colour palettes from images",
-  "version": "1.0.1",
-  "homepage": "http://github.com/josip/node-colour-extractor",
-  "repository": "git://github.com/josip/node-colour-extractor.git",
-  "author": "Josip Lisec <josip@jlx.cc> (http://jlx.cc)",
+  "version": "2.0.0",
+  "homepage": "http://github.com/roteklaue/node-colour-extractor",
+  "repository": "git://github.com/roteklaue/node-colour-extractor.git",
+  "author": "roteKlaue",
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
@@ -28,6 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "@napi-rs/cli": "^2.15.2",
+    "@types/node": "^20.12.8",
     "ava": "^5.1.1"
   },
   "ava": {
@@ -45,5 +46,20 @@
     "universal": "napi universal",
     "version": "napi version"
   },
-  "packageManager": "yarn@3.5.1"
+  "optionalDependencies": {
+    "@colour-extractor/colour-extractor-refactored-win32-x64-msvc": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-darwin-x64": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-linux-x64-gnu": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-darwin-arm64": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-android-arm64": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-linux-arm64-gnu": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-linux-arm64-musl": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-win32-arm64-msvc": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-linux-arm-gnueabihf": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-linux-x64-musl": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-freebsd-x64": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-win32-ia32-msvc": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-android-arm-eabi": "2.0.0",
+    "@colour-extractor/colour-extractor-refactored-darwin-universal": "2.0.0"
+  }
 }

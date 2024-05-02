@@ -1,25 +1,46 @@
 #![deny(clippy::all)]
 
-#[macro_use]
-extern crate napi_derive;
 extern crate clustering;
 extern crate image;
 extern crate itertools;
 extern crate lab;
-mod de2000;
+#[macro_use]
+extern crate napi_derive;
+
+use std::io::Cursor;
+
 use clustering::*;
-use de2000::are_colors_similar;
+use image::{DynamicImage, GenericImageView, ImageResult};
 use image::imageops::FilterType;
-use image::GenericImageView;
+use image::io::Reader;
 use itertools::Itertools;
 use lab::Lab;
 use napi::{
   bindgen_prelude::{Array, AsyncTask},
-  Result, Task,
+  Result, Task
 };
+use napi::bindgen_prelude::Buffer;
+use de2000::are_colors_similar;
+use crate::JsBufferOrString::{JsBuffer, Path};
 
-fn get_top_colours(path: String) -> Result<Vec<[u8; 3]>> {
-  let img_file = image::open(path);
+mod de2000;
+
+enum JsBufferOrString {
+  JsBuffer(Buffer),
+  Path(String),
+}
+
+fn open_js_buffer(buffer: Buffer) -> ImageResult<DynamicImage> {
+  let reader = Reader::new(Cursor::new(buffer.as_ref()))
+      .with_guessed_format()?;
+  reader.decode()
+}
+
+fn get_top_colours(data: JsBufferOrString) -> Result<Vec<[u8; 3]>> {
+  let img_file = match data {
+      Path(path) => image::open(path),
+      JsBuffer(buffer) => open_js_buffer(buffer)
+  };
   let img = match img_file {
     Ok(file) => file.resize(48, 48, FilterType::Nearest),
     Err(e) => {
@@ -46,7 +67,7 @@ fn get_top_colours(path: String) -> Result<Vec<[u8; 3]>> {
     .centroids
     .iter()
     // .filter(|c| c.at(0) + c.at(1) + c.at(2) > 0.0)
-    .map(|c| lab::Lab {
+    .map(|c| Lab {
       l: c.at(0) as f32,
       a: c.at(1) as f32,
       b: c.at(2) as f32,
@@ -80,7 +101,7 @@ fn get_top_colours(path: String) -> Result<Vec<[u8; 3]>> {
 }
 
 pub struct ExtractColours {
-  path: String,
+  path: JsBufferOrString,
 }
 
 impl Task for ExtractColours {
@@ -88,7 +109,10 @@ impl Task for ExtractColours {
   type JsValue = Array;
 
   fn compute(&mut self) -> Result<Self::Output> {
-    get_top_colours(self.path.clone())
+    get_top_colours(match &self.path {
+      Path(path) => Path(path.clone()),
+      JsBuffer(buffer) => JsBuffer(buffer.clone())
+    })
   }
 
   fn resolve(&mut self, env: napi::Env, output: Self::Output) -> Result<Self::JsValue> {
@@ -102,7 +126,7 @@ impl Task for ExtractColours {
 }
 
 pub struct ExtractHexColours {
-  path: String,
+  path: JsBufferOrString,
 }
 
 impl Task for ExtractHexColours {
@@ -110,7 +134,10 @@ impl Task for ExtractHexColours {
   type JsValue = Array;
 
   fn compute(&mut self) -> Result<Self::Output> {
-    match get_top_colours(self.path.clone()) {
+    match get_top_colours(match &self.path {
+      Path(path) => Path(path.clone()),
+      JsBuffer(buffer) => JsBuffer(buffer.clone())
+    }) {
       Ok(colors) => Ok(colors.iter().map(|color| rgb2hex(color)).collect()),
       Err(err) => Err(err),
     }
@@ -128,22 +155,42 @@ impl Task for ExtractHexColours {
 
 #[napi]
 pub fn top_colours(path: String) -> AsyncTask<ExtractColours> {
-  AsyncTask::new(ExtractColours { path })
+  AsyncTask::new(ExtractColours { path: Path(path) })
 }
 
 #[napi]
 pub fn top_colors(path: String) -> AsyncTask<ExtractColours> {
-  AsyncTask::new(ExtractColours { path })
+  AsyncTask::new(ExtractColours { path: Path(path)  })
 }
 
 #[napi]
 pub fn top_colours_hex(path: String) -> AsyncTask<ExtractHexColours> {
-  AsyncTask::new(ExtractHexColours { path })
+  AsyncTask::new(ExtractHexColours { path: Path(path)  })
 }
 
 #[napi]
 pub fn top_colors_hex(path: String) -> AsyncTask<ExtractHexColours> {
-  AsyncTask::new(ExtractHexColours { path })
+  AsyncTask::new(ExtractHexColours { path: Path(path)  })
+}
+
+#[napi]
+pub fn top_colours_hex_buffer(buffer: Buffer) -> AsyncTask<ExtractHexColours> {
+  AsyncTask::new(ExtractHexColours { path: JsBuffer(buffer)  })
+}
+
+#[napi]
+pub fn top_colours_buffer(buffer: Buffer) -> AsyncTask<ExtractColours> {
+  AsyncTask::new(ExtractColours { path: JsBuffer(buffer)  })
+}
+
+#[napi]
+pub fn top_colors_hex_buffer(buffer: Buffer) -> AsyncTask<ExtractHexColours> {
+  AsyncTask::new(ExtractHexColours { path: JsBuffer(buffer)  })
+}
+
+#[napi]
+pub fn top_colors_buffer(buffer: Buffer) -> AsyncTask<ExtractColours> {
+  AsyncTask::new(ExtractColours { path: JsBuffer(buffer)  })
 }
 
 fn rgb2hex([r, g, b]: &[u8; 3]) -> String {

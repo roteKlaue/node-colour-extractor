@@ -17,7 +17,7 @@ function isMusl() {
   // For Node 10
   if (!process.report || typeof process.report.getReport !== 'function') {
     try {
-      const lddPath = require('child_process').execSync('which ldd').toString().trim();
+      const lddPath = require('child_process').execSync('which ldd').toString().trim()
       return readFileSync(lddPath, 'utf8').includes('musl')
     } catch (e) {
       return true
@@ -224,14 +224,72 @@ switch (platform) {
         }
         break
       case 'arm':
+        if (isMusl()) {
+          localFileExisted = existsSync(
+            join(__dirname, 'colour-extractor.linux-arm-musleabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./colour-extractor.linux-arm-musleabihf.node')
+            } else {
+              nativeBinding = require('@colour-extractor/colour-extractor-linux-arm-musleabihf')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        } else {
+          localFileExisted = existsSync(
+            join(__dirname, 'colour-extractor.linux-arm-gnueabihf.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./colour-extractor.linux-arm-gnueabihf.node')
+            } else {
+              nativeBinding = require('@colour-extractor/colour-extractor-linux-arm-gnueabihf')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        }
+        break
+      case 'riscv64':
+        if (isMusl()) {
+          localFileExisted = existsSync(
+            join(__dirname, 'colour-extractor.linux-riscv64-musl.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./colour-extractor.linux-riscv64-musl.node')
+            } else {
+              nativeBinding = require('@colour-extractor/colour-extractor-linux-riscv64-musl')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        } else {
+          localFileExisted = existsSync(
+            join(__dirname, 'colour-extractor.linux-riscv64-gnu.node')
+          )
+          try {
+            if (localFileExisted) {
+              nativeBinding = require('./colour-extractor.linux-riscv64-gnu.node')
+            } else {
+              nativeBinding = require('@colour-extractor/colour-extractor-linux-riscv64-gnu')
+            }
+          } catch (e) {
+            loadError = e
+          }
+        }
+        break
+      case 's390x':
         localFileExisted = existsSync(
-          join(__dirname, 'colour-extractor.linux-arm-gnueabihf.node')
+          join(__dirname, 'colour-extractor.linux-s390x-gnu.node')
         )
         try {
           if (localFileExisted) {
-            nativeBinding = require('./colour-extractor.linux-arm-gnueabihf.node')
+            nativeBinding = require('./colour-extractor.linux-s390x-gnu.node')
           } else {
-            nativeBinding = require('@colour-extractor/colour-extractor-linux-arm-gnueabihf')
+            nativeBinding = require('@colour-extractor/colour-extractor-linux-s390x-gnu')
           }
         } catch (e) {
           loadError = e
@@ -252,9 +310,13 @@ if (!nativeBinding) {
   throw new Error(`Failed to load native binding`)
 }
 
-const { topColours, topColors, topColoursHex, topColorsHex } = nativeBinding
+const { topColours, topColors, topColoursHex, topColorsHex, topColoursHexBuffer, topColoursBuffer, topColorsHexBuffer, topColorsBuffer } = nativeBinding
 
 module.exports.topColours = topColours
 module.exports.topColors = topColors
 module.exports.topColoursHex = topColoursHex
 module.exports.topColorsHex = topColorsHex
+module.exports.topColoursHexBuffer = topColoursHexBuffer
+module.exports.topColoursBuffer = topColoursBuffer
+module.exports.topColorsHexBuffer = topColorsHexBuffer
+module.exports.topColorsBuffer = topColorsBuffer

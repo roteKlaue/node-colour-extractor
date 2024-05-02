@@ -7,3 +7,7 @@ export function topColours(path: string): Promise<unknown>
 export function topColors(path: string): Promise<unknown>
 export function topColoursHex(path: string): Promise<unknown>
 export function topColorsHex(path: string): Promise<unknown>
+export function topColoursHexBuffer(buffer: Buffer): Promise<unknown>
+export function topColoursBuffer(buffer: Buffer): Promise<unknown>
+export function topColorsHexBuffer(buffer: Buffer): Promise<unknown>
+export function topColorsBuffer(buffer: Buffer): Promise<unknown>
