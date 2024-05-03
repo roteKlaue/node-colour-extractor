@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "colour-extractor"
+name = "colour-extractor-buffered"
 version = "1.0.0"
 
 [lib]

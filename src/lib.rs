@@ -38,8 +38,8 @@ fn open_js_buffer(buffer: Buffer) -> ImageResult<DynamicImage> {
 
 fn get_top_colours(data: JsBufferOrString) -> Result<Vec<[u8; 3]>> {
   let img_file = match data {
-      Path(path) => image::open(path),
-      JsBuffer(buffer) => open_js_buffer(buffer)
+    Path(path) => image::open(path),
+    JsBuffer(buffer) => open_js_buffer(buffer)
   };
   let img = match img_file {
     Ok(file) => file.resize(48, 48, FilterType::Nearest),
@@ -52,50 +52,50 @@ fn get_top_colours(data: JsBufferOrString) -> Result<Vec<[u8; 3]>> {
   };
 
   let colors = img
-    .pixels()
-    .map(|(_x, _y, rgba)| {
-      let lab = Lab::from_rgba(&rgba.0);
-      vec![lab.l, lab.a, lab.b]
-    })
-    .dedup()
-    .collect::<Vec<_>>();
+      .pixels()
+      .map(|(_x, _y, rgba)| {
+        let lab = Lab::from_rgba(&rgba.0);
+        vec![lab.l, lab.a, lab.b]
+      })
+      .dedup()
+      .collect::<Vec<_>>();
 
   let k = 16;
   let max_iter = 1024;
 
   let clusters = kmeans(k, &colors, max_iter)
-    .centroids
-    .iter()
-    // .filter(|c| c.at(0) + c.at(1) + c.at(2) > 0.0)
-    .map(|c| Lab {
-      l: c.at(0) as f32,
-      a: c.at(1) as f32,
-      b: c.at(2) as f32,
-    })
-    // sorts by L component of lab
-    .collect::<Vec<_>>();
+      .centroids
+      .iter()
+      // .filter(|c| c.at(0) + c.at(1) + c.at(2) > 0.0)
+      .map(|c| Lab {
+        l: c.at(0) as f32,
+        a: c.at(1) as f32,
+        b: c.at(2) as f32,
+      })
+      // sorts by L component of lab
+      .collect::<Vec<_>>();
   let clusters_len = clusters.len();
 
   let sorted_clusters = clusters
-    .iter()
-    .sorted_by(|c1, c2| c1.l.total_cmp(&c2.l))
-    .collect::<Vec<_>>();
+      .iter()
+      .sorted_by(|c1, c2| c1.l.total_cmp(&c2.l))
+      .collect::<Vec<_>>();
 
   let reduced = sorted_clusters
-    .iter()
-    .enumerate()
-    .filter(|(i, color)| {
-      if i + 1 >= clusters_len {
-        false
-      } else {
-        let next_color = sorted_clusters[i + 1];
-        !are_colors_similar(color, &next_color)
-      }
-    })
-    .map(|(_, color)| *(*color))
-    // restores original sorting which was based on frequency
-    .sorted_by_key(|&c| clusters.iter().position(|&r| r == c).unwrap())
-    .collect::<Vec<_>>();
+      .iter()
+      .enumerate()
+      .filter(|(i, color)| {
+        if i + 1 >= clusters_len {
+          false
+        } else {
+          let next_color = sorted_clusters[i + 1];
+          !are_colors_similar(color, &next_color)
+        }
+      })
+      .map(|(_, color)| *(*color))
+      // restores original sorting which was based on frequency
+      .sorted_by_key(|&c| clusters.iter().position(|&r| r == c).unwrap())
+      .collect::<Vec<_>>();
 
   Ok(lab::labs_to_rgbs(&reduced))
 }

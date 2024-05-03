@@ -1,22 +1,18 @@
 {
-  "name": "@colour-extractor/colour-extractor-darwin-x64",
-  "version": "2.0.1",
+  "name": "colour-extractor-buffered-darwin-x64",
+  "version": "0.0.0",
   "os": [
     "darwin"
   ],
   "cpu": [
     "x64"
   ],
-  "main": "colour-extractor.darwin-x64.node",
+  "main": "colour-extractor-buffered.darwin-x64.node",
   "files": [
-    "colour-extractor.darwin-x64.node"
+    "colour-extractor-buffered.darwin-x64.node"
   ],
-  "description": "Extract colour palettes from images",
-  "author": "Josip Lisec <josip@jlx.cc> (http://jlx.cc)",
-  "homepage": "http://github.com/josip/node-colour-extractor",
   "license": "MIT",
   "engines": {
     "node": ">= 10"
-  },
-  "repository": "git://github.com/josip/node-colour-extractor.git"
+  }
 }

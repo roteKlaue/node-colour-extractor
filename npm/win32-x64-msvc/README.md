@@ -1,3 +1,3 @@
-# `@colour-extractor/colour-extractor-win32-x64-msvc`
+# `colour-extractor-buffered-win32-x64-msvc`
 
-This is the **x86_64-pc-windows-msvc** binary for `@colour-extractor/colour-extractor`
+This is the **x86_64-pc-windows-msvc** binary for `colour-extractor-buffered`

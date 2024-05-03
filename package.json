@@ -1,7 +1,7 @@
 {
-  "name": "colour-extractor-refactored",
+  "name": "colour-extractor-buffered",
   "description": "Extract colour palettes from images",
-  "version": "2.0.2",
+  "version": "2.0.0",
   "homepage": "http://github.com/roteklaue/node-colour-extractor",
   "repository": {
     "type": "git",
@@ -11,28 +11,14 @@
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "colour-extractor",
-    "triples": {
-      "additional": [
-        "aarch64-apple-darwin",
-        "aarch64-linux-android",
-        "aarch64-unknown-linux-gnu",
-        "aarch64-unknown-linux-musl",
-        "aarch64-pc-windows-msvc",
-        "armv7-unknown-linux-gnueabihf",
-        "x86_64-unknown-linux-musl",
-        "x86_64-unknown-freebsd",
-        "i686-pc-windows-msvc",
-        "armv7-linux-androideabi",
-        "universal-apple-darwin"
-      ]
-    }
+    "name": "colour-extractor-buffered",
+    "triples": {}
   },
   "license": "MIT",
   "devDependencies": {
-    "@napi-rs/cli": "^2.15.2",
+    "@napi-rs/cli": "^2.18.2",
     "@types/node": "^20.12.8",
-    "ava": "^5.1.1"
+    "ava": "^6.0.1"
   },
   "ava": {
     "timeout": "3m"
@@ -48,5 +34,6 @@
     "test": "ava",
     "universal": "napi universal",
     "version": "napi version"
-  }
+  },
+  "packageManager": "yarn@4.2.1"
 }
